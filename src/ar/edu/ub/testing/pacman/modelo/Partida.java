@@ -1,12 +1,9 @@
 package ar.edu.ub.testing.pacman.modelo;
 
-import java.util.Random;
-
 import ar.edu.ub.testing.consola.Consola;
 import ar.edu.ub.testing.consola.menu.ConsolaMenu;
 import ar.edu.ub.testing.consola.menu.ConsolaMenuItem;
 import ar.edu.ub.testing.pacman.modelo.entity.Ghost;
-import ar.edu.ub.testing.pacman.modelo.entity.Pill;
 import ar.edu.ub.testing.pacman.modelo.entity.direction.DirectionEntity;
 import ar.edu.ub.testing.pacman.modelo.maze.Maze;
 
