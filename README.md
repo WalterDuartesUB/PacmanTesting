@@ -21,7 +21,7 @@ Consideraciones
 ---------------
 Debe tomarse en cuenta las siguientes consideraciones:
 
-a) Sistema de coliciones
+a) Sistema de colisiones
 
 Pacman
 Pacman Especial
@@ -73,7 +73,7 @@ El mapa de usuario tiene que tener las siguientes caracteristicas
 W - Wall / Pared
 P - Punto de partida inicial del Pacman
 G - Punto de partida inicial de todos los fantasmas
-. - Pill / Pasilla
+. - Pill / Pastilla
 * - Pill Special / Pastilla Especial
 
 3) Solo puede haber un P en todo el archivo
@@ -94,4 +94,23 @@ WWWWWWWWW
 7) Si se elige no usar un mapa de usuario, usar uno por default
 (Pendiente buscar el mapa default del pacman original)
 
-c) 
+c) Pacman vs el Mapa
+
+Pacman, al llegar al limite de un mapa y no tener una pared, debe aparecer al otro lado del mapa.
+Ejemplo:
+WWWW.WWWW
+W.......W
+W.*...*.W
+.........
+W..WGW..W
+W..WWW..W
+W...P...W
+W.*...*.W
+W.......W
+WWWW.WWWW
+
+Si pacman avanza hacia la derecha estando en 3 9, debe aparecer en 3 0
+Si pacman avanza hacia arriba estando en 0 5, debe aparecer en 9 5
+
+d) En cada posicion del laberinto pueden convivir distintas entidades, segun las reglas del sistema de colision:
+Ejemplo: En una misma celda pueden estar uno o mas fantasma(visibles) y una Pastilla
