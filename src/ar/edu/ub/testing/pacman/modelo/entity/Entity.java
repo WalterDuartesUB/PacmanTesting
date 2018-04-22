@@ -28,5 +28,18 @@ public abstract class Entity
 		return false;
 	}
 	
-	public abstract String getDibujo();	
+	public abstract String getDibujo();
+	
+	/**
+	 * Cada entidad debe saber quien gana cuando choca contra otra
+	 * @param otherEntity entidad para comparar
+	 * @return el Entity que gane, this en caso de empate
+	 */
+	//TODO VER QUE CONVIENE QUE DEVUELVA ESTE METODO
+	public abstract Entity compare( Entity otherEntity );
+	
+	protected abstract Entity compare( Pacman aPacman );
+	protected abstract Entity compare( Ghost aGhost );
+	protected abstract Entity compare( Pill aPill );
+	protected abstract Entity compare( Wall aWall );
 }
