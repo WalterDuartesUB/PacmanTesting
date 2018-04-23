@@ -111,7 +111,7 @@ public class Partida
 	//
 	
 	private boolean continuarPartida() {		
-		return this.seMurioPacman() || this.seAcabaronLasPildoras();
+		return !this.seMurioPacman() && !this.seAcabaronLasPildoras();
 	}
 
 	/////////////////////////////////////////////////////////////////////////
@@ -125,7 +125,7 @@ public class Partida
 	//
 	
 	private boolean seAcabaronLasPildoras() {
-		return this.getMaze().getPills().length > 0;
+		return this.getMaze().seAcabaronLasPildoras();
 	}
 
 	/////////////////////////////////////////////////////////////////////////

@@ -1,5 +1,6 @@
 package ar.edu.ub.testing.pacman.modelo.maze;
 
+import java.util.LinkedList;
 import java.util.Random;
 
 import ar.edu.ub.testing.consola.Consola;
@@ -7,13 +8,55 @@ import ar.edu.ub.testing.pacman.modelo.entity.Entity;
 import ar.edu.ub.testing.pacman.modelo.entity.Ghost;
 import ar.edu.ub.testing.pacman.modelo.entity.Pacman;
 import ar.edu.ub.testing.pacman.modelo.entity.Pill;
+import ar.edu.ub.testing.pacman.modelo.entity.PillNormal;
+import ar.edu.ub.testing.pacman.modelo.entity.Wall;
 import ar.edu.ub.testing.pacman.modelo.entity.direction.DirectionEntity;
 
 public class Maze
 {
-	private Pacman pacman = null;
-	private Ghost[] fantasmas = null;
-	private Pill[]  pills = null;
+	class MazeCell {
+		private LinkedList<Entity> entity;
+		
+		public MazeCell() {
+			this.setEntity( new LinkedList<Entity>() );
+		}
+		
+		public MazeCell( Entity entity ) {
+			this();
+			
+			this.addEntity( entity );
+		}
+		
+		public void addEntity(Entity entity)
+		{
+			this.getEntity().add(entity);			
+		}
+
+		private LinkedList<Entity> getEntity()
+		{
+			return entity;
+		}
+		private void setEntity(LinkedList<Entity> entity)
+		{
+			this.entity = entity;
+		}
+		
+		@Override
+		public String toString()
+		{	
+			//TODO buscar la entidad mas prioritaria y mostrarla
+			//TODO provisoriamente, se muestra lo que este primero
+			return this.getEntity().get( 0 ).getDibujo();
+		}
+	}	
+	
+	///////////////////////////////////////////////////////////////////////////
+	//
+	
+	private Pacman       pacman = null;
+	private Ghost[]      fantasmas = null;
+	private Pill[]       pills = new Pill[0];
+	private MazeCell[][] mazeCells = null;
 	
 	///////////////////////////////////////////////////////////////////////////
 	//
@@ -27,12 +70,57 @@ public class Maze
 		// Muestra por consola el estado del laberinto
 		// VER LA DOCUMENTACION DE LA CLASE Consola
 		
+		for( MazeCell[] filas : this.getMazeCells() )
+		{
+			for( MazeCell celda : filas )
+				consola.print( celda.toString() );
+			
+			consola.println();
+		}
 	}
 
 	public static Maze construirMaze()
 	{
 		// TODO Construyo el laberinto con la especificacion default
-		return null;
+		Maze maze = new Maze();
+		
+		//Creo el mapa default hardcoded
+		//TODO esto deberia ser un String que se le pasa a la funcion que crea el mapa basado a un file, para reutilizar el codigo
+		String mapaDefault = "WWWWWWWWWWWWWWWWWWWWWWWWWWWW\r\n" +
+							"W............WW............W\r\n" +
+							"W.WWWW.WWWWW.WW.WWWWW.WWWW.W\r\n" +
+							"W*W__W.W___W.WW.W___W.W__W*W\r\n" +
+							"W.WWWW.WWWWW.WW.WWWWW.WWWW.W\r\n" +
+							"W..........................W\r\n" +
+							"W.WWWW.WW.WWWWWWWW.WW.WWWW.W\r\n" +
+							"W.WWWW.WW.WWWWWWWW.WW.WWWW.W\r\n" +
+							"W......WW....WW....WW......W\r\n" +
+							"WWWWWW.WWWWW_WW_WWWWW.WWWWWW\r\n" +
+							"_____W.WW____________.W_____\r\n" +
+							"_____W.WW_WWW__WWW_WW.W_____\r\n" +
+							"_____W.WW_W______W_WW.W_____\r\n" +
+							"WWWWWW.WW_W______W_WW.WWWWWW\r\n" +
+							"______.___W__G___W___.______\r\n" +
+							"WWWWWW.WW_W______W_WW.WWWWWW\r\n" +
+							"_____W.WW_W______W_WW.W_____\r\n" +
+							"_____W.WW_WWWWWWWW_WW.W_____\r\n" +
+							"_____W.WW____P_____WW.W_____\r\n" +
+							"WWWWWW.WW_WWWWWWWW_WW.WWWWWW\r\n" +
+							"W............WW............W\r\n" +
+							"W.WWWW.WWWWW.WW.WWWWW.WWWW.W\r\n" +
+							"W.WWWW.WWWWW.WW.WWWWW.WWWW.W\r\n" +
+							"W*..WW....__________....WW*W\r\n" +
+							"WWW.WW.WW.WWWWWWWWWW.WW.WW.W\r\n" +
+							"WWW.WW.WW.WWWWWWWWWW.WW.WW.W\r\n" +
+							"W......WW.....WW.....WW....W\r\n" +
+							"W.WWWWWWWWWWW.WW.WWWWWWWWW.W\r\n" +
+							"W.WWWWWWWWWWW.WW.WWWWWWWWW.W\r\n" +
+							"W..........................W\r\n" +
+							"WWWWWWWWWWWWWWWWWWWWWWWWWWWW\r\n"; 
+
+		
+		
+		return maze;
 	}
 
 
@@ -126,6 +214,22 @@ public class Maze
 	public boolean isPacmanDead()
 	{
 		// TODO devuelve true si el pacman se murio
+		return false;
+	}
+
+	private MazeCell[][] getMazeCells()
+	{
+		return mazeCells;
+	}
+
+	private void setMazeCells(MazeCell[][] mazeCells)
+	{
+		this.mazeCells = mazeCells;
+	}
+
+	public boolean seAcabaronLasPildoras()
+	{
+		//return this.getPills().length > 0;
 		return false;
 	}
 }
