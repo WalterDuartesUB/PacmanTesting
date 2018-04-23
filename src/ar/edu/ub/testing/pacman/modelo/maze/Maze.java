@@ -5,10 +5,12 @@ import java.util.Random;
 
 import ar.edu.ub.testing.consola.Consola;
 import ar.edu.ub.testing.pacman.modelo.entity.Entity;
+import ar.edu.ub.testing.pacman.modelo.entity.EntityClear;
 import ar.edu.ub.testing.pacman.modelo.entity.Ghost;
 import ar.edu.ub.testing.pacman.modelo.entity.Pacman;
 import ar.edu.ub.testing.pacman.modelo.entity.Pill;
 import ar.edu.ub.testing.pacman.modelo.entity.PillNormal;
+import ar.edu.ub.testing.pacman.modelo.entity.PillSpecial;
 import ar.edu.ub.testing.pacman.modelo.entity.Wall;
 import ar.edu.ub.testing.pacman.modelo.entity.direction.DirectionEntity;
 
@@ -56,7 +58,7 @@ public class Maze
 	private Pacman       pacman = null;
 	private Ghost[]      fantasmas = null;
 	private Pill[]       pills = new Pill[0];
-	private MazeCell[][] mazeCells = null;
+	private MazeCell[][] mazeCells = new MazeCell[0][0];
 	
 	///////////////////////////////////////////////////////////////////////////
 	//
@@ -66,9 +68,8 @@ public class Maze
 	}
 		
 	public void imprimir(Consola consola)
-	{
-		// Muestra por consola el estado del laberinto
-		// VER LA DOCUMENTACION DE LA CLASE Consola
+	{	
+		consola.limpiarPantalla();
 		
 		for( MazeCell[] filas : this.getMazeCells() )
 		{
@@ -84,45 +85,106 @@ public class Maze
 		// TODO Construyo el laberinto con la especificacion default
 		Maze maze = new Maze();
 		
-		//Creo el mapa default hardcoded
-		//TODO esto deberia ser un String que se le pasa a la funcion que crea el mapa basado a un file, para reutilizar el codigo
+		// MAPA DEFAULT (Deberia moverse eventualmente a una constante)
 		String mapaDefault = "WWWWWWWWWWWWWWWWWWWWWWWWWWWW\r\n" +
-							"W............WW............W\r\n" +
-							"W.WWWW.WWWWW.WW.WWWWW.WWWW.W\r\n" +
-							"W*W__W.W___W.WW.W___W.W__W*W\r\n" +
-							"W.WWWW.WWWWW.WW.WWWWW.WWWW.W\r\n" +
-							"W..........................W\r\n" +
-							"W.WWWW.WW.WWWWWWWW.WW.WWWW.W\r\n" +
-							"W.WWWW.WW.WWWWWWWW.WW.WWWW.W\r\n" +
-							"W......WW....WW....WW......W\r\n" +
-							"WWWWWW.WWWWW_WW_WWWWW.WWWWWW\r\n" +
-							"_____W.WW____________.W_____\r\n" +
-							"_____W.WW_WWW__WWW_WW.W_____\r\n" +
-							"_____W.WW_W______W_WW.W_____\r\n" +
-							"WWWWWW.WW_W______W_WW.WWWWWW\r\n" +
-							"______.___W__G___W___.______\r\n" +
-							"WWWWWW.WW_W______W_WW.WWWWWW\r\n" +
-							"_____W.WW_W______W_WW.W_____\r\n" +
-							"_____W.WW_WWWWWWWW_WW.W_____\r\n" +
-							"_____W.WW____P_____WW.W_____\r\n" +
-							"WWWWWW.WW_WWWWWWWW_WW.WWWWWW\r\n" +
-							"W............WW............W\r\n" +
-							"W.WWWW.WWWWW.WW.WWWWW.WWWW.W\r\n" +
-							"W.WWWW.WWWWW.WW.WWWWW.WWWW.W\r\n" +
-							"W*..WW....__________....WW*W\r\n" +
-							"WWW.WW.WW.WWWWWWWWWW.WW.WW.W\r\n" +
-							"WWW.WW.WW.WWWWWWWWWW.WW.WW.W\r\n" +
-							"W......WW.....WW.....WW....W\r\n" +
-							"W.WWWWWWWWWWW.WW.WWWWWWWWW.W\r\n" +
-							"W.WWWWWWWWWWW.WW.WWWWWWWWW.W\r\n" +
-							"W..........................W\r\n" +
-							"WWWWWWWWWWWWWWWWWWWWWWWWWWWW\r\n"; 
-
+							 "W............WW............W\r\n" +
+							 "W.WWWW.WWWWW.WW.WWWWW.WWWW.W\r\n" +
+							 "W*W__W.W___W.WW.W___W.W__W*W\r\n" +
+							 "W.WWWW.WWWWW.WW.WWWWW.WWWW.W\r\n" +
+							 "W..........................W\r\n" +
+							 "W.WWWW.WW.WWWWWWWW.WW.WWWW.W\r\n" +
+							 "W.WWWW.WW.WWWWWWWW.WW.WWWW.W\r\n" +
+							 "W......WW....WW....WW......W\r\n" +
+							 "WWWWWW.WWWWW_WW_WWWWW.WWWWWW\r\n" +
+							 "_____W.WW____________.W_____\r\n" +
+							 "_____W.WW_WWW__WWW_WW.W_____\r\n" +
+							 "_____W.WW_W______W_WW.W_____\r\n" +
+							 "WWWWWW.WW_W______W_WW.WWWWWW\r\n" +
+							 "______.___W__G___W___.______\r\n" +
+							 "WWWWWW.WW_W______W_WW.WWWWWW\r\n" +
+							 "_____W.WW_W______W_WW.W_____\r\n" +
+							 "_____W.WW_WWWWWWWW_WW.W_____\r\n" +
+							 "_____W.WW____P_____WW.W_____\r\n" +
+							 "WWWWWW.WW_WWWWWWWW_WW.WWWWWW\r\n" +
+							 "W............WW............W\r\n" +
+							 "W.WWWW.WWWWW.WW.WWWWW.WWWW.W\r\n" +
+							 "W.WWWW.WWWWW.WW.WWWWW.WWWW.W\r\n" +
+							 "W*..WW....__________....WW*W\r\n" +
+							 "WWW.WW.WW.WWWWWWWWWW.WW.WW.W\r\n" +
+							 "WWW.WW.WW.WWWWWWWWWW.WW.WW.W\r\n" +
+							 "W......WW.....WW.....WW....W\r\n" +
+							 "W.WWWWWWWWWWW.WW.WWWWWWWWW.W\r\n" +
+							 "W.WWWWWWWWWWW.WW.WWWWWWWWW.W\r\n" +
+							 "W..........................W\r\n" +
+							 "WWWWWWWWWWWWWWWWWWWWWWWWWWWW\r\n"; 
 		
+		maze.loadFromBuffer( mapaDefault );
 		
 		return maze;
 	}
 
+	/**
+	 * Dado un string, crea un mapa
+	 * @param buffer un String con el mapa para jugar
+	 */
+
+	private void loadFromBuffer(String buffer)
+	{
+
+		// TODO hacer las validaciones pertinentes para que se respete el formato
+		
+		/*
+		 * Reglas: 
+		 * a) todas las lineas tienen que tener la misma cantidad de caracteres
+		 * b) Solo pueden existir los caracteres validos
+		 * 
+		 */
+		
+		String[] lineas = buffer.split( "\r\n" );
+		
+		LinkedList<MazeCell[]> mapa = new LinkedList<MazeCell[]> ();
+		int cantidadColumnas = -1;
+		int cantidadFilas = lineas.length;
+		
+		for( String linea : lineas )
+		{
+			//Me guardo una vez la cantidad de caracteres del mapa
+			if( cantidadColumnas == -1)
+				cantidadColumnas = linea.length() - 2;
+			
+			String[]             caracteres = linea.split("");
+			LinkedList<MazeCell> filaMapa = new LinkedList<MazeCell> (); 
+			
+			for( String caracter : caracteres )
+			{
+				Entity entity = null;
+				
+				// TODO Esto DEBE ser refactorizado
+				if( caracter.compareTo("W") == 0 )
+					entity = new Wall();
+				else if( caracter.compareTo(".") == 0 )
+					entity = new PillNormal();
+				else if( caracter.compareTo("*") == 0 )
+					entity = new PillSpecial();			
+				else if( caracter.compareTo("P") == 0 )
+					entity = new Pacman();
+				else if( caracter.compareTo("G") == 0 )
+					entity = new Ghost();
+				else if( caracter.compareTo("_") == 0 )
+					entity = new EntityClear();
+					
+				//Agrego a mi fila la celda que acabo de crear
+				filaMapa.add( this.new MazeCell( entity ) );
+			}
+			
+			//Me guardo la fila que acabo de crear
+			mapa.add( filaMapa.toArray( new MazeCell[cantidadColumnas] ) );
+		}
+
+		//Coloco el mapa en mi estructura
+		this.setMazeCells( mapa.toArray( new MazeCell[cantidadFilas][cantidadColumnas] ) );
+		
+	}
 
 	public static Maze construirMaze(String pathMapaUsuario)
 	{
