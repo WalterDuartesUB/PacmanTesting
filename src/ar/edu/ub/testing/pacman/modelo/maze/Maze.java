@@ -22,6 +22,7 @@ public class Maze
 {
 	
     private static final String DATA_TXT_DIR = "C:\\Sistemas\\Pacman\\Maze.txt";   // provisorio
+    private static final String DATA_TXT_DIR2 = "C:\\Sistemas\\Pacman\\Maze2.txt";   // provisorio version fea 
     
     
 	class MazeCell {
@@ -58,7 +59,9 @@ public class Maze
 			//TODO provisoriamente, se muestra lo que este primero
 			return this.getEntity().get( 0 ).getDibujo();
 		}
-	}	
+	}
+
+	private static String[] pruebas;	
 	
 	///////////////////////////////////////////////////////////////////////////
 	//
@@ -88,10 +91,20 @@ public class Maze
 		}
 	}
 
-	public static Maze construirMaze()
+	public static Maze construirMaze() throws FileNotFoundException, IOException 
 	{
 		// TODO Construyo el laberinto con la especificacion default
 		Maze maze = new Maze();
+		
+		String[] prueba = muestraContenido(DATA_TXT_DIR2);
+		
+		
+		System.out.println(prueba[1]);
+		System.out.println(prueba.length); // Alto
+		System.out.println(prueba[0].length()); // ancho
+		
+		// Tengo que resolver despues el spli de cada linea o volver a pensar desde entrada como esta leyendo el txt
+		
 		
 		// MAPA DEFAULT (Deberia moverse eventualmente a una constante)
 		String mapaDefault = "WWWWWWWWWWWWWWWWWWWWWWWWWWWW\r\n" +
@@ -130,27 +143,25 @@ public class Maze
 		
 		return maze;
 	}
+	
+	
     public static String[] muestraContenido(String archivo) throws FileNotFoundException, IOException {
-        String[] cadena;
-        String[] pruebas = null;
-      
+        String cadena;
+        pruebas = null;
         FileReader f = new FileReader(archivo);
         BufferedReader b = new BufferedReader(f);
-        LinkedList<String> pruebalist;
-        
-        
-        cadena = b.readLine().split("\\r\\n");
-        System.out.println(cadena[1]);
-        
-        /*
         while((cadena = b.readLine())!=null) {
-            System.out.println(cadena);
-            //pruebas = cadena.split("\\r\\n");
+        //    System.out.println(cadena);
+            pruebas = cadena.split("--");    // Esto lo lee si fuera asi wwwwwwwww--w.....w....--etc etc 
+            /*
+             * La idea es que tendria que ser cadena.split("\\r\\n") 
+             * Para leer por ejemplo: 
+             * 
+             * WWWWWWWWWWW
+             * W....W..... 
+             */
         }
-        */
-
-       
-       b.close();
+        b.close();
         
         return pruebas;
     }
