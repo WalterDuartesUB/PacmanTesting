@@ -1,5 +1,9 @@
 package ar.edu.ub.testing.pacman.modelo.maze;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -16,6 +20,10 @@ import ar.edu.ub.testing.pacman.modelo.entity.direction.DirectionEntity;
 
 public class Maze
 {
+	
+    private static final String DATA_TXT_DIR = "C:\\Sistemas\\Pacman\\Maze.txt";   // provisorio
+    
+    
 	class MazeCell {
 		private LinkedList<Entity> entity;
 		
@@ -122,6 +130,30 @@ public class Maze
 		
 		return maze;
 	}
+    public static String[] muestraContenido(String archivo) throws FileNotFoundException, IOException {
+        String[] cadena;
+        String[] pruebas = null;
+      
+        FileReader f = new FileReader(archivo);
+        BufferedReader b = new BufferedReader(f);
+        LinkedList<String> pruebalist;
+        
+        
+        cadena = b.readLine().split("\\r\\n");
+        System.out.println(cadena[1]);
+        
+        /*
+        while((cadena = b.readLine())!=null) {
+            System.out.println(cadena);
+            //pruebas = cadena.split("\\r\\n");
+        }
+        */
+
+       
+       b.close();
+        
+        return pruebas;
+    }
 
 	/**
 	 * Dado un string, crea un mapa
