@@ -54,8 +54,8 @@ public class Partida
 			this.moverPacman();			
 			
 			//Solo muevo los fantasmas si sigue la partida
-			if( this.continuarPartida() )			
-				this.moverFantasmas();		
+			/*if( this.continuarPartida() )			
+				this.moverFantasmas();	*/	
 		}				
 		
 		return this.obtenerResultadoJuego();
@@ -72,13 +72,13 @@ public class Partida
 	///////////////////////////////////////////////////////////////////////////
 	//
 	
-	private void moverFantasmas() {
+	/*private void moverFantasmas() {
 		
 		Ghost[] fantasmas = this.getMaze().getFantasmas();
 				
 		for( Ghost fantasma : fantasmas )	
 			this.getMaze().tick( fantasma );
-	}
+	}*/
 
 	/////////////////////////////////////////////////////////////////////////
 	//
@@ -87,9 +87,8 @@ public class Partida
 					
 		//Giro el pacman a donde corresponda
 		DirectionEntity direccion = this.obtenerDireccionPacman();
-	
 		// Muevo el pacman en la direccion del usuario
-		this.getMaze().tickPacman( direccion );		 
+		this.getMaze().tickPacman( direccion );	
 	}
 
 	/////////////////////////////////////////////////////////////////////////

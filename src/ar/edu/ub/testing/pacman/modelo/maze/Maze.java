@@ -38,6 +38,11 @@ public class Maze
 		{
 			return entity;
 		}
+		private Entity checkEntity()
+		{
+			return this.getEntity().get( 0 );
+		}
+		
 		private void setEntity(LinkedList<Entity> entity)
 		{
 			this.entity = entity;
@@ -84,7 +89,7 @@ public class Maze
 	{
 		// TODO Construyo el laberinto con la especificacion default
 		Maze maze = new Maze();
-		
+		maze.setPacman(new Pacman());
 		// MAPA DEFAULT (Deberia moverse eventualmente a una constante)
 		String mapaDefault = "WWWWWWWWWWWWWWWWWWWWWWWWWWWW\r\n" +
 							 "W............WW............W\r\n" +
@@ -119,7 +124,6 @@ public class Maze
 							 "WWWWWWWWWWWWWWWWWWWWWWWWWWWW\r\n"; 
 		
 		maze.loadFromBuffer( mapaDefault );
-		
 		return maze;
 	}
 
@@ -166,7 +170,7 @@ public class Maze
 					entity = new PillNormal();
 				else if( caracter.compareTo("*") == 0 )
 					entity = new PillSpecial();			
-				else if( caracter.compareTo("P") == 0 )
+				else if( caracter.compareTo("P") == 0 ) 
 					entity = new Pacman();
 				else if( caracter.compareTo("G") == 0 )
 					entity = new Ghost();
@@ -211,7 +215,7 @@ public class Maze
 
 	public Pacman getPacman()
 	{
-		return this.getPacman();
+		return this.pacman;
 	}
 
 	private void setPacman(Pacman pacman)
@@ -265,11 +269,14 @@ public class Maze
 	{
 		// TODO hace que pacman camine
 		//Si cambio de direccion, giro el pacman
+		System.out.println(this.getPacman());
 		if( !direccion.sonIguales( this.getPacman().getDirection() ) )
 			this.getPacman().setDirection( direccion );
 		else
 		{
-			// TODO hago que camine
+			if (this.getPacman().compare(mazeCells [this.getPacman().getPosicion().getY()] [this.getPacman().getPosicion().getX()].checkEntity()) instanceof Pacman || this.getPacman().compare(mazeCells [this.getPacman().getPosicion().getY()] [this.getPacman().getPosicion().getX()].checkEntity()) instanceof EntityClear){
+				this.getPacman().tick();
+			}
 		}
 	}
 

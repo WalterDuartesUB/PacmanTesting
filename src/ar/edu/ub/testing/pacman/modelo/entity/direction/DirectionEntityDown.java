@@ -8,7 +8,7 @@ public class DirectionEntityDown extends DirectionEntity
 	@Override
 	public Posicion getStep()
 	{
-		return null;
+		return new Posicion(0,-1);
 	}
 
 	@Override

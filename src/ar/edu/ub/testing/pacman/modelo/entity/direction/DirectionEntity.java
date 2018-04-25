@@ -33,7 +33,7 @@ public abstract class DirectionEntity
 	
 	public Posicion getNextPosition(Posicion posicion)
 	{
-		return posicion.add( posicion );
+		return posicion.add( this.getStep() );
 	}
 	
 	public abstract Posicion getStep();
