@@ -1,5 +1,9 @@
 package ar.edu.ub.testing.pacman.modelo.maze;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -16,6 +20,10 @@ import ar.edu.ub.testing.pacman.modelo.entity.direction.DirectionEntity;
 
 public class Maze
 {
+	
+    private static final String DATA_TXT_DIR = "C:\\Sistemas\\Pacman\\Maze.txt";   // provisorio
+    
+    
 	class MazeCell {
 		private LinkedList<Entity> entity;
 		
@@ -50,7 +58,9 @@ public class Maze
 			//TODO provisoriamente, se muestra lo que este primero
 			return this.getEntity().get( 0 ).getDibujo();
 		}
-	}	
+	}
+
+	private static String[] pruebas;	
 	
 	///////////////////////////////////////////////////////////////////////////
 	//
@@ -80,54 +90,96 @@ public class Maze
 		}
 	}
 
-	public static Maze construirMaze()
-	{
-		// TODO Construyo el laberinto con la especificacion default
+	public static Maze construirMazeDefault() {
 		Maze maze = new Maze();
 		
-		// MAPA DEFAULT (Deberia moverse eventualmente a una constante)
+		// MAPA DEFAULT (Deberia moverse eventualmente a una constante
 		String mapaDefault = "WWWWWWWWWWWWWWWWWWWWWWWWWWWW\r\n" +
-							 "W............WW............W\r\n" +
-							 "W.WWWW.WWWWW.WW.WWWWW.WWWW.W\r\n" +
-							 "W*W__W.W___W.WW.W___W.W__W*W\r\n" +
-							 "W.WWWW.WWWWW.WW.WWWWW.WWWW.W\r\n" +
-							 "W..........................W\r\n" +
-							 "W.WWWW.WW.WWWWWWWW.WW.WWWW.W\r\n" +
-							 "W.WWWW.WW.WWWWWWWW.WW.WWWW.W\r\n" +
-							 "W......WW....WW....WW......W\r\n" +
-							 "WWWWWW.WWWWW_WW_WWWWW.WWWWWW\r\n" +
-							 "_____W.WW____________.W_____\r\n" +
-							 "_____W.WW_WWW__WWW_WW.W_____\r\n" +
-							 "_____W.WW_W______W_WW.W_____\r\n" +
-							 "WWWWWW.WW_W______W_WW.WWWWWW\r\n" +
-							 "______.___W__G___W___.______\r\n" +
-							 "WWWWWW.WW_W______W_WW.WWWWWW\r\n" +
-							 "_____W.WW_W______W_WW.W_____\r\n" +
-							 "_____W.WW_WWWWWWWW_WW.W_____\r\n" +
-							 "_____W.WW____P_____WW.W_____\r\n" +
-							 "WWWWWW.WW_WWWWWWWW_WW.WWWWWW\r\n" +
-							 "W............WW............W\r\n" +
-							 "W.WWWW.WWWWW.WW.WWWWW.WWWW.W\r\n" +
-							 "W.WWWW.WWWWW.WW.WWWWW.WWWW.W\r\n" +
-							 "W*..WW....__________....WW*W\r\n" +
-							 "WWW.WW.WW.WWWWWWWWWW.WW.WW.W\r\n" +
-							 "WWW.WW.WW.WWWWWWWWWW.WW.WW.W\r\n" +
-							 "W......WW.....WW.....WW....W\r\n" +
-							 "W.WWWWWWWWWWW.WW.WWWWWWWWW.W\r\n" +
-							 "W.WWWWWWWWWWW.WW.WWWWWWWWW.W\r\n" +
-							 "W..........................W\r\n" +
-							 "WWWWWWWWWWWWWWWWWWWWWWWWWWWW\r\n"; 
+				 "W............WW............W\r\n" +
+				 "W.WWWW.WWWWW.WW.WWWWW.WWWW.W\r\n" +
+				 "W*W__W.W___W.WW.W___W.W__W*W\r\n" +
+				 "W.WWWW.WWWWW.WW.WWWWW.WWWW.W\r\n" +
+				 "W..........................W\r\n" +
+				 "W.WWWW.WW.WWWWWWWW.WW.WWWW.W\r\n" +
+				 "W.WWWW.WW.WWWWWWWW.WW.WWWW.W\r\n" +
+				 "W......WW....WW....WW......W\r\n" +
+				 "WWWWWW.WWWWW_WW_WWWWW.WWWWWW\r\n" +
+				 "_____W.WW____________.W_____\r\n" +
+				 "_____W.WW_WWW__WWW_WW.W_____\r\n" +
+				 "_____W.WW_W______W_WW.W_____\r\n" +
+				 "WWWWWW.WW_W______W_WW.WWWWWW\r\n" +
+				 "______.___W__G___W___.______\r\n" +
+				 "WWWWWW.WW_W______W_WW.WWWWWW\r\n" +
+				 "_____W.WW_W______W_WW.W_____\r\n" +
+				 "_____W.WW_WWWWWWWW_WW.W_____\r\n" +
+				 "_____W.WW____P_____WW.W_____\r\n" +
+				 "WWWWWW.WW_WWWWWWWW_WW.WWWWWW\r\n" +
+				 "W............WW............W\r\n" +
+				 "W.WWWW.WWWWW.WW.WWWWW.WWWW.W\r\n" +
+				 "W.WWWW.WWWWW.WW.WWWWW.WWWW.W\r\n" +
+				 "W*..WW....__________....WW*W\r\n" +
+				 "WWW.WW.WW.WWWWWWWWWW.WW.WW.W\r\n" +
+				 "WWW.WW.WW.WWWWWWWWWW.WW.WW.W\r\n" +
+				 "W......WW.....WW.....WW....W\r\n" +
+				 "W.WWWWWWWWWWW.WW.WWWWWWWWW.W\r\n" +
+				 "W.WWWWWWWWWWW.WW.WWWWWWWWW.W\r\n" +
+				 "W..........................W\r\n" +
+				 "WWWWWWWWWWWWWWWWWWWWWWWWWWWW\r\n"; 
 		
 		maze.loadFromBuffer( mapaDefault );
 		
 		return maze;
 	}
-
+	
+	public static Maze construirMaze() throws FileNotFoundException, IOException 
+	{
+		// TODO Construyo el laberinto con la especificacion default
+		Maze maze = new Maze();
+		String mapaPersonalizado = leerTxt(DATA_TXT_DIR);	
+		maze.loadFromBuffer( mapaPersonalizado);
+		return maze;
+	}
+	
+    public static String leerTxt(String archivo) throws FileNotFoundException, IOException{
+    	FileReader f = new FileReader(archivo);
+    	BufferedReader b = new BufferedReader(f);
+    	int i = 0;
+    	int cantidadLineas = obtenerCantidadLineas(archivo);
+    	// Falta validar el tamaño del mapa personalizado
+    	 String [] mapaProvisorio = new String[cantidadLineas];
+    	for (String line = b.readLine(); line != null ; line = b.readLine()) {
+    		mapaProvisorio[i] = line;
+    		i++;
+    	}
+    	b.close();
+    	String mapa = pasamanoProvisorio(mapaProvisorio);
+    	return mapa;
+    }
+    
+	public static int obtenerCantidadLineas(String archivo) throws IOException {
+		
+		FileReader f = new FileReader(archivo);
+		BufferedReader b = new BufferedReader(f);
+		int cantidadLineas = 0;
+		for (String line = b.readLine(); line != null ; line = b.readLine()) {
+			cantidadLineas ++ ;
+		}
+		b.close();	
+		return cantidadLineas;
+	}
+	
+	public static String pasamanoProvisorio(String [] prueba) {
+		String mapa = "";
+		for (int i = 0; i <prueba.length ; i++) {
+			mapa = mapa +prueba[i] +"\r\n";
+		}
+		return mapa;
+	}
+    
 	/**
 	 * Dado un string, crea un mapa
 	 * @param buffer un String con el mapa para jugar
 	 */
-
 	private void loadFromBuffer(String buffer)
 	{
 
@@ -191,7 +243,10 @@ public class Maze
 		// TODO Si no puede crear el laberinto por formato invalido, debe dar una excepcion
 		return null;
 	}
-
+	
+	public static Maze construirMazeDefault(String pendienteMenu) {
+		return null;
+	}
 
 	public Ghost[] getFantasmas()
 	{
