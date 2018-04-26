@@ -8,8 +8,7 @@ public class DirectionEntityRight extends DirectionEntity
 	@Override
 	public Posicion getStep()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return new Posicion(1,0);
 	}
 
 	@Override

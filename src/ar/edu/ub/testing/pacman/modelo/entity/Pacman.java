@@ -10,14 +10,18 @@ public class Pacman extends MovingEntity
 	
 	public Pacman()
 	{
-		//Creo el pacman en estado normal
 		this.setYellow();
+		this.setPosicion(new Posicion(1,1));
 	}
 	
 	@Override
 	public void tick()
 	{	
-		
+		System.out.println(this.getPosicion().getX());
+		System.out.println(this.getPosicion().getY());
+		this.setPosicion(this.getDirection().getNextPosition(this.getPosicion()));
+		System.out.println(this.getPosicion().getX());
+		System.out.println(this.getPosicion().getY());
 	}
 
 	@Override
