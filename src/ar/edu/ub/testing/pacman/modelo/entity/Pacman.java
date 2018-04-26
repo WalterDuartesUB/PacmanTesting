@@ -2,26 +2,23 @@ package ar.edu.ub.testing.pacman.modelo.entity;
 
 import ar.edu.ub.testing.pacman.modelo.entity.pacman.PacmanState;
 import ar.edu.ub.testing.pacman.modelo.entity.pacman.PacmanStateBlue;
+import ar.edu.ub.testing.pacman.modelo.entity.pacman.PacmanStateDead;
 import ar.edu.ub.testing.pacman.modelo.entity.pacman.PacmanStateYellow;
 
 public class Pacman extends MovingEntity
 {
 	private PacmanState	state = null;
 	
-	public Pacman()
+	public Pacman(int x, int y)
 	{
 		this.setYellow();
-		this.setPosicion(new Posicion(1,1));
+		this.setPosicion(new Posicion(x,y));
 	}
 	
 	@Override
 	public void tick()
 	{	
-		System.out.println(this.getPosicion().getX());
-		System.out.println(this.getPosicion().getY());
 		this.setPosicion(this.getDirection().getNextPosition(this.getPosicion()));
-		System.out.println(this.getPosicion().getX());
-		System.out.println(this.getPosicion().getY());
 	}
 
 	@Override
@@ -29,8 +26,12 @@ public class Pacman extends MovingEntity
 	{
 		return "P";
 	}
+	
+	public void isDead(Pacman pacman) {
+		this.setState( new PacmanStateDead());
+	}
 
-	private PacmanState getState()
+	public PacmanState getState()
 	{
 		return state;
 	}

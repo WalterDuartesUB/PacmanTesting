@@ -17,11 +17,12 @@ import ar.edu.ub.testing.pacman.modelo.entity.PillNormal;
 import ar.edu.ub.testing.pacman.modelo.entity.PillSpecial;
 import ar.edu.ub.testing.pacman.modelo.entity.Wall;
 import ar.edu.ub.testing.pacman.modelo.entity.direction.DirectionEntity;
+import ar.edu.ub.testing.pacman.modelo.entity.pacman.PacmanStateDead;
 
 public class Maze
 {
 	
-    private static final String DATA_TXT_DIR = "C:\\Sistemas\\Pacman\\Maze.txt";   // provisorio
+    private static final String DATA_TXT_DIR = "C:\\Maze.txt";   // provisorio
     
     
 	class MazeCell {
@@ -54,6 +55,12 @@ public class Maze
 		private void setEntity(LinkedList<Entity> entity)
 		{
 			this.entity = entity;
+		}
+		
+		public void pacCheck(LinkedList<Entity> entity, Pacman pacman){
+			for (int i = 0; i <= entity.size();i++) {
+				pacman.compare(entity.get(i));
+			}
 		}
 		
 		@Override
@@ -223,8 +230,11 @@ public class Maze
 					entity = new PillNormal();
 				else if( caracter.compareTo("*") == 0 )
 					entity = new PillSpecial();			
-				else if( caracter.compareTo("P") == 0 ) 
-					entity = new Pacman();
+				else if( caracter.compareTo("P") == 0 ) {
+					
+					this.setPacman( new Pacman(caracteres.toString().indexOf(caracter), lineas.toString().indexOf(linea)) );
+					entity = this.getPacman();
+				}
 				else if( caracter.compareTo("G") == 0 )
 					entity = new Ghost();
 				else if( caracter.compareTo("_") == 0 )
@@ -330,16 +340,39 @@ public class Maze
 			this.getPacman().setDirection( direccion );
 		else
 		{
-			if (this.getPacman().compare(mazeCells [this.getPacman().getPosicion().getY()] [this.getPacman().getPosicion().getX()].checkEntity()) instanceof Pacman || this.getPacman().compare(mazeCells [this.getPacman().getPosicion().getY()] [this.getPacman().getPosicion().getX()].checkEntity()) instanceof EntityClear){
+			if (!nextStepIsWall(this.getPacman())){
 				this.getPacman().tick();
+				normalizarStep(this.getPacman());
 			}
 		}
 	}
-
+	
+	public boolean nextStepIsWall(Pacman entity){
+		Pacman pacman = entity;
+		pacman.getDirection().getStep();
+		
+		return this.mazeCells[pacman.getPosicion().getX()][pacman.getPosicion().getY()].checkEntity() instanceof Wall;
+	}
+	
+	public boolean nextStepIsWall(Ghost entity){
+		Ghost fantasma = entity;
+		fantasma.getDirection().getStep();
+		return this.mazeCells[fantasma.getPosicion().getX()][fantasma.getPosicion().getY()].checkEntity() instanceof Wall;
+	}
+	
+	public void normalizarStep(Entity entity) {
+		if (entity.getPosicion().getX() > this.mazeCells.length) {
+			entity.getPosicion().setX(0);
+		}
+		if (entity.getPosicion().getY() > this.mazeCells[0].length) {
+			entity.getPosicion().setY(0);
+		}
+		
+	}
+		
 	public boolean isPacmanDead()
 	{
-		// TODO devuelve true si el pacman se murio
-		return false;
+		return this.pacman.getState() instanceof PacmanStateDead;
 	}
 
 	private MazeCell[][] getMazeCells()
@@ -354,7 +387,6 @@ public class Maze
 
 	public boolean seAcabaronLasPildoras()
 	{
-		//return this.getPills().length > 0;
-		return false;
+		return pills.length == 0;
 	}
 }

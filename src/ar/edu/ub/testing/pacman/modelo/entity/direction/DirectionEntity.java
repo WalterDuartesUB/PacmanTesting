@@ -1,6 +1,7 @@
 package ar.edu.ub.testing.pacman.modelo.entity.direction;
 
 import ar.edu.ub.testing.pacman.modelo.entity.Posicion;
+import ar.edu.ub.testing.pacman.modelo.maze.Maze;
 
 public abstract class DirectionEntity
 {
@@ -37,6 +38,7 @@ public abstract class DirectionEntity
 	}
 	
 	public abstract Posicion getStep();
+	
 	public abstract DirectionEntity[] getOtherDirections();
 	
 	public boolean sonIguales(DirectionEntity direction)

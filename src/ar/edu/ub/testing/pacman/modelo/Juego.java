@@ -1,5 +1,8 @@
 package ar.edu.ub.testing.pacman.modelo;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import ar.edu.ub.testing.consola.Consola;
 import ar.edu.ub.testing.consola.ConsolaTeclado;
 import ar.edu.ub.testing.consola.menu.ConsolaMenu;
@@ -16,7 +19,7 @@ public class Juego
 		 this.setConsola( ConsolaTeclado.getConsola() );
 	}
 	
-	public void jugar()
+	public void jugar() throws FileNotFoundException, IOException
 	{
 		/**
 		 * Debe implementarse un metodo que tenga un menu donde se permita al 
@@ -40,7 +43,7 @@ public class Juego
 		}
 	}
 
-	private Maze obtenerLaberinto()
+	private Maze obtenerLaberinto() throws FileNotFoundException, IOException
 	{
 		Maze   maze = Maze.construirMaze();
 		
