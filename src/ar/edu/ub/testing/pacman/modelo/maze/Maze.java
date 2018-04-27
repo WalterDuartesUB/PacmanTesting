@@ -22,7 +22,11 @@ public class Maze
 {
 	
     private static final String DATA_TXT_DIR = "C:\\Sistemas\\Pacman\\Maze.txt";   // provisorio
-    
+    private static final int ANCHO_MINIMO = 8;
+    private static final int ANCHO_MAXIMO = 40;
+    private static final int ALTO_MINIMO = 8;
+    private static final int ALTO_MAXIMO = 40;
+
     
 	class MazeCell {
 		private LinkedList<Entity> entity;
@@ -155,14 +159,19 @@ public class Maze
     	for (String line = b.readLine(); line != null ; line = b.readLine()) {
     		mapaProvisorio[i] = line;
     		i++;
+    	}	
+    	if(validarMapa(mapaProvisorio)) {
+    		System.out.println("todo ok"); 
+    	}else {
+    		System.out.println("Error");      // Hacer un throw exception
     	}
     	b.close();
     	String mapa = pasamanoProvisorio(mapaProvisorio);
+
     	return mapa;
     }
     
 	public static int obtenerCantidadLineas(String archivo) throws IOException {
-		
 		FileReader f = new FileReader(archivo);
 		BufferedReader b = new BufferedReader(f);
 		int cantidadLineas = 0;
@@ -180,7 +189,69 @@ public class Maze
 		}
 		return mapa;
 	}
+	
+    private static boolean validarMapa(String[] mapa) {
+
+    	boolean valido = true;
+    	String [] prueba = null;
+    	int altoMapa = mapa.length;
+    	int anchoMapa = mapa[0].length();
+    	int unicos= 0;
+  
+    	for ( int i = 0 ; i < mapa.length ; i ++) {
+    		prueba = mapa[i].split("");
+    		for (int x = 0 ; x < prueba.length ; x++) {
+    			if(!validarCaracter(prueba[x]))
+    				valido = false;
+    			if(soloUnaPyG(prueba[x])) 
+    				unicos++;	
+    			}
+    		}
+    	
+    	if (unicos > 2)
+    		valido = false;				// throw exception
+    	
+    	if(!validarDimensionesPermitidas(mapa,altoMapa,anchoMapa))		// throw exception
+    		valido = false;
+    	
+    	if(!validarConsistenciaDimensiones(mapa, altoMapa, anchoMapa))
+    		valido=false;
+    	
+    	return valido;
+    }
     
+    private static boolean validarConsistenciaDimensiones(String [] mapa,int altoMapa, int anchoMapa){
+    	boolean valido = true;
+    	
+    	for(int i = 0 ; i < altoMapa ; i++) {
+    		if (mapa[i].length() != anchoMapa)
+    			valido = false;
+    	}
+    	return valido;
+    }
+    
+    private static boolean validarDimensionesPermitidas(String [] mapa, int altoMapa, int anchoMapa) {
+    	return (validarAltoPermitido(altoMapa) && validarAnchoPermitido(anchoMapa));
+    }
+    
+    private static boolean validarAltoPermitido(int altoMapa) {
+    	return(altoMapa >= ALTO_MINIMO && altoMapa <= ALTO_MAXIMO);
+    }
+    
+    private static boolean validarAnchoPermitido(int anchoMapa) {
+    	return(anchoMapa >= ANCHO_MINIMO && anchoMapa <= ANCHO_MAXIMO);
+    }
+    
+    private static boolean soloUnaPyG(String caracter) {
+    	String caracteresUnicos ="PG";
+    	return(caracteresUnicos.contains(caracter));
+    }
+    
+    private static boolean validarCaracter(String caracter) {
+    	
+    	String caracteresValidos = "WP._G";
+    	return(caracteresValidos.contains(caracter));	
+}
 	/**
 	 * Dado un string, crea un mapa
 	 * @param buffer un String con el mapa para jugar
