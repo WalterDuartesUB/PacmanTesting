@@ -14,9 +14,15 @@ public class DirectionEntityLeft extends DirectionEntity
 	@Override
 	public DirectionEntity[] getOtherDirections()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return new DirectionEntity[] { DirectionEntity.DOWN, DirectionEntity.RIGHT, DirectionEntity.UP };
 	}
+	
+	@Override
+	public DirectionEntity getDireccionOpuesta() {
+		
+		return DirectionEntity.RIGHT;
+	}
+
 
 
 }

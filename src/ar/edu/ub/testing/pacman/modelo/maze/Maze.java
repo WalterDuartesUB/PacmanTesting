@@ -1,4 +1,5 @@
 package ar.edu.ub.testing.pacman.modelo.maze;
+import java.util.Collections;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -58,8 +59,8 @@ public class Maze
 		}
 		
 		public void pacCheck(LinkedList<Entity> entity, Pacman pacman){
-			for (int i = 0; i <= entity.size();i++) {
-				pacman.compare(entity.get(i));
+			for (int i = 0; i < entity.size();i++) {
+				checkPacmanAction(pacman.compare(entity.get(i)), entity.get(i) );
 			}
 		}
 		
@@ -209,6 +210,8 @@ public class Maze
 		LinkedList<MazeCell[]> mapa = new LinkedList<MazeCell[]> ();
 		int cantidadColumnas = -1;
 		int cantidadFilas = lineas.length;
+		LinkedList<Pill> listaPills = new LinkedList<Pill> ();
+		LinkedList<Ghost> listaGhost = new LinkedList<Ghost> ();
 		
 		for( String linea : lineas )
 		{
@@ -226,17 +229,23 @@ public class Maze
 				// TODO Esto DEBE ser refactorizado
 				if( caracter.compareTo("W") == 0 )
 					entity = new Wall();
-				else if( caracter.compareTo(".") == 0 )
+				else if( caracter.compareTo(".") == 0 ) {
 					entity = new PillNormal();
-				else if( caracter.compareTo("*") == 0 )
-					entity = new PillSpecial();			
+					listaPills.add((Pill)entity);
+				}
+				else if( caracter.compareTo("*") == 0 ) {
+					entity = new PillSpecial();	
+					listaPills.add((Pill) entity);
+				}
 				else if( caracter.compareTo("P") == 0 ) {
 					
 					this.setPacman( new Pacman(caracteres.toString().indexOf(caracter), lineas.toString().indexOf(linea)) );
 					entity = this.getPacman();
 				}
-				else if( caracter.compareTo("G") == 0 )
-					entity = new Ghost();
+				else if( caracter.compareTo("G") == 0 ) {
+					entity = new Ghost(caracteres.toString().indexOf(caracter), lineas.toString().indexOf(linea));
+					listaGhost.add((Ghost)entity);
+				} 
 				else if( caracter.compareTo("_") == 0 )
 					entity = new EntityClear();
 					
@@ -250,6 +259,8 @@ public class Maze
 
 		//Coloco el mapa en mi estructura
 		this.setMazeCells( mapa.toArray( new MazeCell[cantidadFilas][cantidadColumnas] ) );
+		this.setPills(listaPills.toArray(new Pill[listaPills.size()]));
+		this.setFantasmas(listaGhost.toArray(new Ghost[listaGhost.size()]));
 		
 	}
 
@@ -303,10 +314,19 @@ public class Maze
 	{
 		
 	}
+	public void ghostWallCheck(Ghost fantasma) {
+		LinkedList<DirectionEntity> direcciones = new LinkedList<DirectionEntity>();
+		Collections.addAll(direcciones, fantasma.getDirection().getOtherDirections());
+		while (nextStepIsWall(fantasma)) {
+			int i =  new Random().nextInt() % direcciones.size();
+			fantasma.setDirection(direcciones.get(i));
+			direcciones.remove(i);
+	}
+	}
 
 	public void tick(Ghost fantasma)
 	{
-		// TODO Si mi proximo paso es pared, pido todas las direcciones que no sean pared y me cambio de orientacion		
+		ghostWallCheck(fantasma);
 		fantasma.tick();
 		
 		fantasma.setDirection( this.obtenerDireccionFantasma() );
@@ -360,6 +380,12 @@ public class Maze
 		return this.mazeCells[fantasma.getPosicion().getX()][fantasma.getPosicion().getY()].checkEntity() instanceof Wall;
 	}
 	
+	public boolean nextStepIsGhost(Ghost entity){
+		Ghost fantasma = entity;
+		fantasma.getDirection().getStep();
+		return this.mazeCells[fantasma.getPosicion().getX()][fantasma.getPosicion().getY()].checkEntity() instanceof Ghost;
+	}
+	
 	public void normalizarStep(Entity entity) {
 		if (entity.getPosicion().getX() > this.mazeCells.length) {
 			entity.getPosicion().setX(0);
@@ -367,6 +393,12 @@ public class Maze
 		if (entity.getPosicion().getY() > this.mazeCells[0].length) {
 			entity.getPosicion().setY(0);
 		}
+		
+	}
+	
+	public void checkPacmanAction(int i,Entity entity) {
+		if(i < 0)
+		this.pacman.isDead();
 		
 	}
 		

@@ -27,7 +27,7 @@ public class Pacman extends MovingEntity
 		return "P";
 	}
 	
-	public void isDead(Pacman pacman) {
+	public void isDead() {
 		this.setState( new PacmanStateDead());
 	}
 
@@ -54,32 +54,32 @@ public class Pacman extends MovingEntity
 	}
 
 	@Override
-	public Entity compare(Entity otherEntity)
+	public int compare(Entity otherEntity)
 	{
 		return otherEntity.compare( this );
 	}
 
 	@Override
-	protected Entity compare(Pacman aPacman)
+	protected int compare(Pacman aPacman)
 	{
 		// TODO tiene que tirar una excepcion
-		return null;
+		return 0;
 	}
 
 	@Override
-	protected Entity compare(Ghost aGhost)
+	protected int compare(Ghost aGhost)
 	{
 		return this.getState().compare( aGhost );
 	}
 
 	@Override
-	protected Entity compare(Pill aPill)
+	protected int compare(Pill aPill)
 	{
-		return this;
+		return 1;
 	}
 
 	@Override
-	protected Entity compare(Wall aWall)
+	protected int compare(Wall aWall)
 	{
 		return aWall.compare( this );
 	}

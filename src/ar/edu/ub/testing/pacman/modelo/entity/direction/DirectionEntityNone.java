@@ -18,5 +18,12 @@ public class DirectionEntityNone extends DirectionEntity
 	{
 		return new Posicion(0, 0);
 	}
+	
+	@Override
+	public DirectionEntity getDireccionOpuesta() {
+		
+		return null;
+	}
+
 
 }

@@ -1,15 +1,14 @@
 package ar.edu.ub.testing.pacman.modelo.entity.pacman;
 
-import ar.edu.ub.testing.pacman.modelo.entity.Entity;
 import ar.edu.ub.testing.pacman.modelo.entity.Ghost;
 
 public class PacmanStateBlue implements PacmanState
 {
 
 	@Override
-	public Entity compare(Ghost aGhost)
+	public int compare(Ghost aGhost)
 	{
-		return null;
+		return 1;
 	}
 
 }

@@ -9,24 +9,24 @@ public class GhostStateRunning implements GhostState
 {
 
 	@Override
-	public Entity compare(Ghost aGhost)
+	public int compare(Ghost aGhost)
 	{
 		// TODO VER COMO INDICAR QUE GANA EL FANTASMA
-		return null;
+		return 1;
 	}
 
 	@Override
-	public Entity compare(Pill aPill)
+	public int compare(Pill aPill)
 	{
 		// TODO VER COMO INDICAR QUE GANA EL FANTASMA
-		return null;
+		return 1;
 	}
 
 	@Override
-	public Entity compare(Pacman aPacman)
+	public int compare(Pacman aPacman)
 	{
-		// TODO VER COMO INDICAR QUE GANA EL FANTASMA
-		return null;
+		Ghost aGhost = null;
+		return aPacman.getState().compare(aGhost);
 	}
 
 }

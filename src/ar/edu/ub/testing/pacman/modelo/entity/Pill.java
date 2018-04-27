@@ -3,35 +3,35 @@ package ar.edu.ub.testing.pacman.modelo.entity;
 public abstract class Pill extends Structure
 {
 	@Override
-	public Entity compare(Entity otherEntity)
+	public int compare(Entity otherEntity)
 	{
 		return otherEntity.compare( this );
 	}
 
 	@Override
-	protected Entity compare(Pacman aPacman)
+	protected int compare(Pacman aPacman)
 	{
-		return aPacman;
+		return -1;
 	}
 
 	@Override
-	protected Entity compare(Ghost aGhost)
+	protected int compare(Ghost aGhost)
 	{
-		return aGhost;
+		return -1;
 	}
 
 	@Override
-	protected Entity compare(Pill aPill)
+	protected int compare(Pill aPill)
 	{
 		// TODO Esto tiene que tirar una excepcion
-		return null;
+		return 0;
 	}
 
 	@Override
-	protected Entity compare(Wall aWall)
+	protected int compare(Wall aWall)
 	{
 		// TODO Esto tiene que tirar una excepcion
-		return null;
+		return 0;
 	}
 
 }

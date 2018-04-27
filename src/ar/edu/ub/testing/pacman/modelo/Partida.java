@@ -72,13 +72,13 @@ public class Partida
 	///////////////////////////////////////////////////////////////////////////
 	//
 	
-	/*private void moverFantasmas() {
+	private void moverFantasmas() {
 		
 		Ghost[] fantasmas = this.getMaze().getFantasmas();
 				
 		for( Ghost fantasma : fantasmas )	
 			this.getMaze().tick( fantasma );
-	}*/
+	}
 
 	/////////////////////////////////////////////////////////////////////////
 	//

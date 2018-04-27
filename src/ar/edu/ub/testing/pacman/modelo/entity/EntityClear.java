@@ -10,38 +10,38 @@ public class EntityClear extends Entity
 	}
 
 	@Override
-	public Entity compare(Entity otherEntity)
+	public int compare(Entity otherEntity)
 	{
 		// TODO Auto-generated method stub
-		return null;
+		return -1;
 	}
 
 	@Override
-	protected Entity compare(Pacman aPacman)
+	protected int compare(Pacman aPacman)
 	{
 		// TODO Auto-generated method stub
-		return null;
+		return -1;
 	}
 
 	@Override
-	protected Entity compare(Ghost aGhost)
+	protected int compare(Ghost aGhost)
 	{
 		// TODO Auto-generated method stub
-		return null;
+		return -1;
 	}
 
 	@Override
-	protected Entity compare(Pill aPill)
+	protected int compare(Pill aPill)
 	{
 		// TODO Auto-generated method stub
-		return null;
+		return -1;
 	}
 
 	@Override
-	protected Entity compare(Wall aWall)
+	protected int compare(Wall aWall)
 	{
 		// TODO Auto-generated method stub
-		return null;
+		return -1;
 	}
 
 }

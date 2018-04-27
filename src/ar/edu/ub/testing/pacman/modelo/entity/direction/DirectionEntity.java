@@ -41,6 +41,8 @@ public abstract class DirectionEntity
 	
 	public abstract DirectionEntity[] getOtherDirections();
 	
+	public abstract DirectionEntity getDireccionOpuesta();
+	
 	public boolean sonIguales(DirectionEntity direction)
 	{
 		return this == direction;

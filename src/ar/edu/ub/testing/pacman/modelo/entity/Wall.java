@@ -10,35 +10,35 @@ public class Wall extends Structure
 	}
 
 	@Override
-	public Entity compare(Entity otherEntity)
+	public int compare(Entity otherEntity)
 	{
 		return otherEntity.compare( this );
 	}
 
 	@Override
-	protected Entity compare(Pacman aPacman)
+	protected int compare(Pacman aPacman)
 	{
-		return this;
+		return 1;
 	}
 
 	@Override
-	protected Entity compare(Ghost aGhost)
+	protected int compare(Ghost aGhost)
 	{
-		return this;
+		return 1;
 	}
 
 	@Override
-	protected Entity compare(Pill aPill)
+	protected int compare(Pill aPill)
 	{
 		//TODO esto tiene que dar una excepcion
-		return null;
+		return 1;
 	}
 
 	@Override
-	protected Entity compare(Wall aWall)
+	protected int compare(Wall aWall)
 	{
 		// TODO esto tiene que dar una excepcion
-		return null;
+		return 0;
 	}
 
 }
